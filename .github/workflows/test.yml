@@ -4,19 +4,33 @@ on:
   push:
     
 jobs:
-  echo-test:
+  build-test:
+    echo-test:
+      runs-on: ubuntu-latest
+
+      steps:
+        - uses: actions/checkout@v3
+        - uses: actions/setup-node@v3
+          with:
+            node-version: 16
+
+        - name: Install dependancies
+          run: npm ci
+        - name: Run unit tests
+          run: npm test
+        - name: Build
+          run: npm run build
+  deploy:
     runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
+    needs: build-test
 
-      - name: Install dependancies
-        run: npm ci
-      - name: Run unit tests
-        run: npm test
-      - name: Build
-        run: npm run build
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "joke-app" #Must be unique in Heroku
+          heroku_email: "waseem11@hotmail.fr"
+
   
