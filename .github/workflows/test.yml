@@ -31,7 +31,7 @@ jobs:
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "jokeappesgi" #Must be unique in Heroku
-          heroku_email: "waseem11@hotmail.fr"
+          heroku_email: "waseem11@hotmail.fr" 
   publish:
     runs-on: ubuntu-latest
     needs: echo-test
